@@ -2133,7 +2133,7 @@ static void FrogbotsDisable(void)
 	}
 }
 
-static void FrogbotsGoMarker()
+static void FrogbotsGoMarker(void)
 {
 	if (!is_adm(self))
 	{
