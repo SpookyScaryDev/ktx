@@ -9,6 +9,7 @@ void RuneRespawn(void);
 void RuneTouch(void);
 void RuneResetOwner(void);
 char* GetRuneSpawnName(void);
+void BotsRuneDropped(gedict_t* rune);
 
 void DoDropRune(int rune, qbool on_respawn)
 {
