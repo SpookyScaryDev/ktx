@@ -67,18 +67,22 @@ void DoDropRune(int rune, qbool on_respawn)
 	if (rune & CTF_RUNE_RES)
 	{
 		setmodel(item, "progs/end1.mdl");
+		item->tp_flags = it_rune1;
 	}
 	else if (rune & CTF_RUNE_STR)
 	{
 		setmodel(item, "progs/end2.mdl");
+		item->tp_flags = it_rune2;
 	}
 	else if (rune & CTF_RUNE_HST)
 	{
 		setmodel(item, "progs/end3.mdl");
+		item->tp_flags = it_rune3;
 	}
 	else if (rune & CTF_RUNE_RGN)
 	{
 		setmodel(item, "progs/end4.mdl");
+		item->tp_flags = it_rune4;
 	}
 
 	setsize(item, -16, -16, 0, 16, 16, 56);
@@ -91,6 +95,13 @@ void DoDropRune(int rune, qbool on_respawn)
 	{
 		sound(item, CHAN_VOICE, "items/itembk2.wav", 1, ATTN_NORM);	// play respawn sound
 	}
+
+#ifdef BOT_SUPPORT
+	if (bots_enabled())
+	{
+		BotsRuneDropped(item);
+	}
+#endif
 }
 
 void DoTossRune(int rune)
@@ -124,18 +135,22 @@ void DoTossRune(int rune)
 	if (rune & CTF_RUNE_RES)
 	{
 		setmodel(item, "progs/end1.mdl");
+		item->tp_flags = it_rune1;
 	}
 	else if (rune & CTF_RUNE_STR)
 	{
 		setmodel(item, "progs/end2.mdl");
+		item->tp_flags = it_rune2;
 	}
 	else if (rune & CTF_RUNE_HST)
 	{
 		setmodel(item, "progs/end3.mdl");
+		item->tp_flags = it_rune3;
 	}
 	else if (rune & CTF_RUNE_RGN)
 	{
 		setmodel(item, "progs/end4.mdl");
+		item->tp_flags = it_rune4;
 	}
 
 	setorigin(item, self->s.v.origin[0], self->s.v.origin[1], self->s.v.origin[2] - 24);
@@ -144,6 +159,13 @@ void DoTossRune(int rune)
 	item->touch = (func_t) RuneTouch;
 	item->s.v.nextthink = g_globalvars.time + 0.75;
 	item->think = (func_t) RuneResetOwner;
+
+#ifdef BOT_SUPPORT
+	if (bots_enabled())
+	{
+		BotsRuneDropped(item);
+	}
+#endif
 }
 
 void DropRune(void)
@@ -272,6 +294,13 @@ void RuneTouch(void)
 		self->s.v.nextthink = g_globalvars.time + 90;
 	}
 
+#ifdef BOT_SUPPORT
+	if (bots_enabled() && other->isBot)
+	{
+		self->fb.item_touch(self, other);
+	}
+#endif
+
 	if (other->ctf_flag & CTF_RUNE_MASK)
 	{
 		if (g_globalvars.time > other->rune_notify_time)
@@ -317,6 +346,15 @@ void RuneTouch(void)
 	sound(other, CHAN_ITEM, "weapons/lock4.wav", 1, ATTN_NORM);
 	stuffcmd(other, "bf\n");
 	ent_remove(self);
+
+	TeamplayEventItemTaken(other, self);
+
+#ifdef BOT_SUPPORT
+	if (bots_enabled() && other->isBot)
+	{
+		self->fb.item_taken(self, other);
+	}
+#endif
 }
 
 char* GetRuneSpawnName(void)
