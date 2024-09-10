@@ -466,9 +466,6 @@ void BotPerformHook(gedict_t* self)
 
 		// Close enough to marker
 		qbool ok_distance = touch_dist >= 10 && touch_dist <= 100;
-		
-		// Fire will trigger (technically we could jump anyway if framedelay enabled, but leave for now)
-		qbool ok_to_fire = !self->s.v.button0 && self->attack_finished < g_globalvars.time;
 
 		// Don't hook to the same marker we are on
 		qbool ok_target = self->fb.touch_marker != self->fb.linked_marker;

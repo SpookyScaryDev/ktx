@@ -32,15 +32,14 @@
 #define CARRIER_DEFEND_TIME  4
 
 void DropFlag(gedict_t *flag, qbool tossed);
-void PlaceFlag(void);
 void FlagThink(void);
 void FlagTouch(void);
 void SP_item_flag_team1(void);
 void SP_item_flag_team2(void);
 
 #ifdef BOT_SUPPORT
-void BotsFlag1Spawned(gedict_t* ent);
-void BotsFlag2Spawned(gedict_t* ent);
+void BotsFlag1Dropped(gedict_t* ent);
+void BotsFlag2Dropped(gedict_t* ent);
 #endif
 
 // Allows us to add flags (or other items) to dm maps when ctfing without actually changing bsp

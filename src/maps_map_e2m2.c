@@ -17,10 +17,11 @@ static float goal_discharge_marker(gedict_t* self, gedict_t* marker)
 	return 0;
 }
 
-static void fb_discharge_marker_touch(gedict_t* ent)
+static qbool fb_discharge_marker_touch(gedict_t* ent, gedict_t* player)
 {
 	self->fb.look_object = ent;
 	AssignVirtualGoal(ent);
+	return false;
 }
 
 void BotsSetUpE2M2DischargeMarker(gedict_t* marker)

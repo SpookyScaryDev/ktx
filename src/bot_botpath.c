@@ -217,14 +217,14 @@ qbool CheckLookAtButton(gedict_t* self)
 	if (marker && marker->fb.door_entity && marker->fb.door_entity->s.v.takedamage)
 	{
 		LookAtButton(marker, true);
-		return;
+		return true;
 	}
 
 	marker = self->fb.touch_marker;
 	if (marker && marker->fb.door_entity && marker->fb.door_entity->s.v.takedamage)
 	{
 		LookAtButton(marker, true);
-		return;
+		return true;
 	}
 
 	// Now check if there is a button linked to the current or next marker
@@ -246,7 +246,7 @@ qbool CheckLookAtButton(gedict_t* self)
 			if (!path->next_marker || !(path->flags & LOOK_BUTTON)) continue;
 
 			LookAtButton(path->next_marker, false);
-			return;
+			return true;
 		}
 	}
 

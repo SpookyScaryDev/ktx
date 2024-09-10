@@ -1158,9 +1158,10 @@ static void fb_spawn_rune(gedict_t* ent)
 	ent->fb.item_respawned = AssignVirtualGoal;
 }
 
-static void fb_defense_marker_touch(gedict_t* ent)
+static qbool fb_defense_marker_touch(gedict_t* ent, gedict_t* player)
 {
 	AssignVirtualGoal(ent);
+	return false;
 }
 
 static void fb_spawn_defense_marker(gedict_t* ent)

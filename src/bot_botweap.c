@@ -532,7 +532,10 @@ static qbool SelectWeaponToShootButton(gedict_t* self)
 		}
 
 		self->fb.firing |= CheckNewWeapon(desired_weapon);
+		return true;
 	}
+
+	return false;
 }
 
 static qbool MidairAimLogic(gedict_t *self, float rel_dist)
@@ -628,7 +631,9 @@ void SetFireButton(gedict_t *self, vec3_t rel_pos, float rel_dist)
 
 	DM6SelectWeaponToOpenDoor(self);
 
-	SelectWeaponToShootButton(self);
+	if (!SelectWeaponToShootButton(self)) {
+		return;
+	}
 
 	if (HurtSelfLogic(self))
 	{

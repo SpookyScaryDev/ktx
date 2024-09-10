@@ -2166,7 +2166,6 @@ static void FrogbotsGoMarker(void)
 	VectorSubtract(g_globalvars.trace_endpos, tmp, endpoint);
 
 	gedict_t* nearest = LocateMarker(endpoint);
-	gedict_t* previous = debug_marker;
 	if (nearest == debug_marker) debug_marker = NULL;
 	else debug_marker = nearest;
 
