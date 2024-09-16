@@ -180,7 +180,8 @@ static qbool LookingAtPlayer(gedict_t *self)
 
 void LookAtButton(gedict_t* button, qbool buttonIsDoor)
 {
-	gedict_t* target = buttonIsDoor ? button->fb.door_entity : button;
+	gedict_t *target = buttonIsDoor ? button->fb.door_entity : button;
+	gedict_t *trigger = PROG_TO_EDICT(target->s.v.enemy);
 
 	vec3_t target_origin;
 	VectorScale(target->s.v.absmin, 0.5, target_origin);
@@ -189,8 +190,6 @@ void LookAtButton(gedict_t* button, qbool buttonIsDoor)
 	traceline(self->s.v.origin[0], self->s.v.origin[1], self->s.v.origin[2] + 16,
 		target_origin[0], target_origin[1], target_origin[2],
 		true, self);
-
-	gedict_t* trigger = PROG_TO_EDICT(target->s.v.enemy);
 
 	if (g_globalvars.trace_fraction == 1 ||
 		PROG_TO_EDICT(g_globalvars.trace_ent) == target ||
@@ -239,14 +238,15 @@ qbool CheckLookAtButton(gedict_t* self)
 	
 	if (marker)
 	{
-		for (int i = 0; i < NUMBER_PATHS; i++)
+		int i;
+		for (i = 0; i < NUMBER_PATHS; i++)
 		{
 			fb_path_t* path = &marker->fb.paths[i];
 
-			if (!path->next_marker || !(path->flags & LOOK_BUTTON)) continue;
-
-			LookAtButton(path->next_marker, false);
-			return true;
+			if (path->next_marker && (path->flags & LOOK_BUTTON)) {
+				LookAtButton(path->next_marker, false);
+				return true;
+			}
 		}
 	}
 
