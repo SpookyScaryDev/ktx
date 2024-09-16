@@ -507,7 +507,7 @@ static qbool KeepFiringAtEnemy(gedict_t *self)
 			&& BotUsingCorrectWeapon(self));
 }
 
-static qbool SelectWeaponToShootButton(gedict_t* self)
+static void SelectWeaponToShootButton(gedict_t* self)
 {
 	if (self->fb.path_state & FIRE_BUTTON)
 	{
@@ -532,10 +532,8 @@ static qbool SelectWeaponToShootButton(gedict_t* self)
 		}
 
 		self->fb.firing |= CheckNewWeapon(desired_weapon);
-		return true;
 	}
 
-	return false;
 }
 
 static qbool MidairAimLogic(gedict_t *self, float rel_dist)
@@ -631,9 +629,7 @@ void SetFireButton(gedict_t *self, vec3_t rel_pos, float rel_dist)
 
 	DM6SelectWeaponToOpenDoor(self);
 
-	if (!SelectWeaponToShootButton(self)) {
-		return;
-	}
+	SelectWeaponToShootButton(self);
 
 	if (HurtSelfLogic(self))
 	{
