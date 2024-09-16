@@ -430,11 +430,11 @@ static float goal_flag(gedict_t* player, gedict_t* flag)
 
 static float goal_rune(gedict_t* self, gedict_t* rune)
 {
-	if (!isCTF()) return 0;
-
 	int newRune = rune->ctf_flag;
 	int currentRune = self->ctf_flag & CTF_RUNE_MASK;
 	gedict_t* teammate;
+
+	if (!isCTF()) return 0;
 
 	// Already have a rune
 	if (self->ctf_flag & CTF_RUNE_MASK)
