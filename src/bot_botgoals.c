@@ -129,6 +129,7 @@ void EvalGoal(gedict_t *self, gedict_t *goal_entity)
 	float goal_desire =
 			goal_entity && goal_entity->fb.desire ? goal_entity->fb.desire(self, goal_entity) : 0;
 	float goal_time = 0.0f;
+	qbool ignoreDistance;
 
 	if (!goal_entity)
 	{
@@ -230,7 +231,7 @@ void EvalGoal(gedict_t *self, gedict_t *goal_entity)
 			}
 		}
 
-		qbool ignoreDistance = ShouldGoalIgnoreDistance(goal_entity);
+		ignoreDistance = ShouldGoalIgnoreDistance(goal_entity);
 
 		// If the bot can think far enough ahead...
 		if (goal_time < self->fb.skill.lookahead_time || ignoreDistance)
@@ -251,6 +252,7 @@ static void EvalGoal2(gedict_t *goal_entity, gedict_t *best_goal_marker, qbool c
 {
 	float goal_desire = 0.0f;
 	float traveltime2 = 0.0f;
+	qbool ignoreDistance;
 
 	if (goal_entity == NULL)
 	{
@@ -306,7 +308,7 @@ static void EvalGoal2(gedict_t *goal_entity, gedict_t *best_goal_marker, qbool c
 				}
 			}
 
-			qbool ignoreDistance = ShouldGoalIgnoreDistance(goal_entity);
+			ignoreDistance = ShouldGoalIgnoreDistance(goal_entity);
 
 			if (traveltime2 < self->fb.skill.lookahead_time || ignoreDistance)
 			{
@@ -413,7 +415,7 @@ void UpdateGoal(gedict_t *self)
 
 	BotEvadeLogic(self);
 
-	if (enemy_->fb.touch_marker && !self->ctf_flag & CTF_FLAG) // Don't chase if carrying flag
+	if (enemy_->fb.touch_marker && !(self->ctf_flag & CTF_FLAG)) // Don't chase if carrying flag
 	{
 		self->fb.virtual_enemy = enemy_;
 		self->fb.goal_enemy_desire =
