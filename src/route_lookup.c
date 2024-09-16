@@ -17,11 +17,11 @@ float SubZoneArrivalTime(float zone_time, gedict_t *middle_marker, gedict_t *fro
 	{
 		return (zone_time + middle_marker->fb.subzones[from_marker->fb.S_].hook_time);
 	}
-	if (rl_routes)
+	else if (rl_routes)
 	{
 		return (zone_time + middle_marker->fb.subzones[from_marker->fb.S_].rj_time);
 	}
-	if (!rl_routes && !hook_routes)
+	else
 	{
 		return (zone_time + middle_marker->fb.subzones[from_marker->fb.S_].time);
 	}
