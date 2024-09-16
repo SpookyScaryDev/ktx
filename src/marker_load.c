@@ -418,6 +418,7 @@ qbool LoadBotRoutingFromFile(void)
 	fileHandle_t file = -1;
 	char lineData[128];
 	char argument[128];
+	char botFileName[128];
 
 	// Load bot definition file: frogbots rely on objects spawning 
 	//    markers, so be aware of alternative .ent files
@@ -432,7 +433,6 @@ qbool LoadBotRoutingFromFile(void)
 		}
 	}
 
-	char botFileName[128];
 	strlcpy(botFileName, mapname, sizeof(botFileName));
 	if (isCTF()) strlcat(botFileName, "_ctf", sizeof(botFileName));
 	if (file == -1)
