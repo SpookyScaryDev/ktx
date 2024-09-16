@@ -383,13 +383,14 @@ static float goal_flag_enemy(gedict_t* player, gedict_t* flag)
 	}
 	else if (flag->cnt == FLAG_AT_BASE) 
 	{
-		if (self->fb.skill.ctf_role == FB_CTF_ROLE_DEFEND) return 0;
 		gedict_t* teammate = IdentifyMostVisibleTeammate(self);
+		if (self->fb.skill.ctf_role == FB_CTF_ROLE_DEFEND) return 0;
 		if (teammate != world && !teammate->isBot)
 		{
 			vec3_t toTeam;
+			float distance;
 			VectorSubtract(flag->s.v.origin, teammate->s.v.origin, toTeam);
-			float distance = VectorLength(toTeam);
+			distance = VectorLength(toTeam);
 			// If a human is near and no enemies are, let them take the flag
 			if (distance < 500 && (self->fb.enemy_dist >= 1500 || self->fb.enemy_dist == 600)) return 0;
 		}
@@ -433,6 +434,7 @@ static float goal_rune(gedict_t* self, gedict_t* rune)
 
 	int newRune = rune->ctf_flag;
 	int currentRune = self->ctf_flag & CTF_RUNE_MASK;
+	gedict_t* teammate;
 
 	// Already have a rune
 	if (self->ctf_flag & CTF_RUNE_MASK)
@@ -460,13 +462,14 @@ static float goal_rune(gedict_t* self, gedict_t* rune)
 		return 0;
 	}
 
-	gedict_t* teammate = IdentifyMostVisibleTeammate(self);
+	teammate = IdentifyMostVisibleTeammate(self);
 	if (teammate != world && !teammate->isBot && !(teammate->ctf_flag & CTF_RUNE_MASK))
 	{
 		// If a human is near and no enemies are, let them take the rune
 		vec3_t toTeam;
+		float distance;
 		VectorSubtract(rune->s.v.origin, teammate->s.v.origin, toTeam);
-		float distance = VectorLength(toTeam);
+		distance = VectorLength(toTeam);
 		if (distance < 400 && !(teammate->ctf_flag & CTF_RUNE_MASK) && (self->fb.enemy_dist >= 1500 || self->fb.enemy_dist == 600))
 			return 0;
 	}
@@ -476,6 +479,8 @@ static float goal_rune(gedict_t* self, gedict_t* rune)
 
 static float goal_defend_marker(gedict_t* self, gedict_t* marker) 
 {
+	gedict_t *flag1, *flag2, *teamFlag, *enemyFlag;
+
 	if (!isCTF()) return 0;
 
 	// Don't try and defend if you are carrying the flag!
@@ -487,7 +492,6 @@ static float goal_defend_marker(gedict_t* self, gedict_t* marker)
 
 	if (VectorDistance(self->s.v.origin, marker->s.v.origin) < 300) return 0; // BAD!
 
-	gedict_t* flag1, * flag2, * teamFlag, * enemyFlag;
 
 	flag1 = find(world, FOFCLSN, "item_flag_team1");
 	flag2 = find(world, FOFCLSN, "item_flag_team2");
