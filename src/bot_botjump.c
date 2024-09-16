@@ -425,17 +425,18 @@ void BotPerformHook(gedict_t* self)
 	{
 		// Stop if close to the target
 		vec3_t toTarget;
-		VectorSubtract(self->fb.hookTarget->s.v.origin, self->s.v.origin, toTarget);
+		vec3_t differenceFromPreviousPosition;
+		qbool stop_early = false;
 		float distanceToTarget = VectorLength(toTarget);
+
+		VectorSubtract(self->fb.hookTarget->s.v.origin, self->s.v.origin, toTarget);
 
 		// Stop if obscured by a wall etc
 		traceline(PASSVEC3(self->fb.hookTarget->s.v.origin), PASSVEC3(self->s.v.origin), true, world);
 
 		// Stop if not moved much since last frame (stuck near marker)
-		vec3_t differenceFromPreviousPosition;
 		VectorSubtract(self->s.v.origin, self->fb.hookOldPosition, differenceFromPreviousPosition);
 
-		qbool stop_early = false;
 		if (self->fb.touch_marker->fb.paths[0].flags & HOOK && self->fb.touch_marker->fb.paths[0].time < 0.2)
 			stop_early = false;
 		else if (distanceToTarget < 20) stop_early = true;

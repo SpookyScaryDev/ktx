@@ -132,17 +132,19 @@ static void SurrenderCTFItemsLogic(gedict_t* self)
 	gedict_t* teammate = IdentifyMostVisibleTeammate(self);
 	if (teammate != world && !teammate->isBot) {
 		vec3_t toTeam;
-		VectorSubtract(teammate->s.v.origin, self->s.v.origin, toTeam);
 		float distance = VectorLength(toTeam);
+
+		VectorSubtract(teammate->s.v.origin, self->s.v.origin, toTeam);
 
 		// If close to a human player, and if no enemies are near
 		if (distance < 150 && self->fb.enemy_dist >= 500)
 		{
 			// yikes! maybe a better way to do this? Not sure if changing the angles like this breaks demos. TODO!
 			vec3_t oldAngles;
+			vec3_t predictedOffset;
+
 			VectorCopy(self->s.v.v_angle, oldAngles);
 
-			vec3_t predictedOffset;
 			VectorScale(teammate->s.v.velocity, 0.1, predictedOffset);
 			VectorAdd(toTeam, predictedOffset, toTeam);
 
@@ -255,6 +257,12 @@ static void BotOnGroundMovement(gedict_t *self, vec3_t dir_move)
 
 static void BotMoveTowardsLinkedMarker(gedict_t *self, vec3_t dir_move)
 {
+	vec3_t temp;
+	gedict_t *goalentity_ = &g_edicts[self->s.v.goalentity];
+	gedict_t *linked = self->fb.linked_marker;
+	qbool onGround = ((int)self->s.v.flags & FL_ONGROUND);
+	qbool curlJump = ((int)self->fb.path_state & BOTPATH_CURLJUMP_HINT);
+
 	if (self->fb.hooking)
 	{
 		// Stop before starting to hook
@@ -264,12 +272,6 @@ static void BotMoveTowardsLinkedMarker(gedict_t *self, vec3_t dir_move)
 			return;
 		}
 	}
-
-	vec3_t temp;
-	gedict_t *goalentity_ = &g_edicts[self->s.v.goalentity];
-	gedict_t *linked = self->fb.linked_marker;
-	qbool onGround = ((int)self->s.v.flags & FL_ONGROUND);
-	qbool curlJump = ((int)self->fb.path_state & BOTPATH_CURLJUMP_HINT);
 
 	VectorAdd(linked->s.v.absmin, linked->s.v.view_ofs, temp);
 	VectorSubtract(temp, self->s.v.origin, temp);

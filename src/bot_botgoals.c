@@ -58,7 +58,6 @@ void UpdateGoalEntity(gedict_t *item, gedict_t *taker)
 static qbool GoalLeaveForTeammate(gedict_t *self, gedict_t *goal_entity)
 {
 	gedict_t* plr;
-	int item;
 
 	if ((g_globalvars.time < goal_entity->fb.touchPlayerTime) && goal_entity->fb.touchPlayer
 			&& (goal_entity->fb.touchPlayer != self))
@@ -81,9 +80,10 @@ static qbool GoalLeaveForTeammate(gedict_t *self, gedict_t *goal_entity)
 			{ "item_artifact_invulnerability", "item_artifact_invisibility",
 					"item_artifact_super_damage", "item_flag_team1", "item_flag_team2" };
 
-			for (item = 0; item < sizeof(ignore) / sizeof(ignore[0]); ++item)
+			int i;
+			for (i = 0; i < sizeof(ignore) / sizeof(ignore[0]); ++i)
 			{
-				if (streq(goal_entity->classname, ignore[item])) return false;
+				if (streq(goal_entity->classname, ignore[i])) return false;
 			}
 
 			// Let the bot with the highest desire take the item, if the bots can see each other.

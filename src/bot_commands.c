@@ -2135,14 +2135,17 @@ static void FrogbotsDisable(void)
 
 static void FrogbotsGoMarker(void)
 {
+	vec3_t direction;
+	vec3_t src, dst, tmp;
+	vec3_t endpoint;
+	gedict_t* nearest;
+	gedict_t* player;
+
 	if (!is_adm(self))
 	{
 		G_sprint(self, PRINT_HIGH, "You must be an admin to use this command\n");
 		return;
 	}
-
-	vec3_t direction;
-	vec3_t src, dst, tmp;
 
 	trap_makevectors(self->s.v.v_angle);
 	aim(direction);
@@ -2159,13 +2162,12 @@ static void FrogbotsGoMarker(void)
 	
 	if (!g_globalvars.trace_fraction) return;
 
-	vec3_t endpoint;
 	VectorSubtract(g_globalvars.trace_endpos, src, tmp);
 	VectorNormalize(tmp);
 	VectorScale(tmp, 10, tmp);
 	VectorSubtract(g_globalvars.trace_endpos, tmp, endpoint);
 
-	gedict_t* nearest = LocateMarker(endpoint);
+	nearest = LocateMarker(endpoint);
 	if (nearest == debug_marker) debug_marker = NULL;
 	else debug_marker = nearest;
 
@@ -2174,7 +2176,6 @@ static void FrogbotsGoMarker(void)
 		G_sprint(self, PRINT_HIGH, "Sending all bots to %s\n", debug_marker->classname);
 	}
 
-	gedict_t* player;
 	for (player = world; (player = find_plr(player));)
 	{
 		if (player->isBot)
