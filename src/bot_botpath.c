@@ -197,7 +197,7 @@ void LookAtButton(gedict_t* button, qbool buttonIsDoor)
 	{
 		if ((target->s.v.takedamage))
 		{
-			if (buttonIsDoor && (target->state == STATE_TOP || target->state == STATE_UP) ||
+			if ((buttonIsDoor && (target->state == STATE_TOP || target->state == STATE_UP)) ||
 			   (target->s.v.enemy && (trigger->state == STATE_TOP || trigger->state == STATE_UP)) ||
 			   (!target->s.v.enemy && !buttonIsDoor))
 			{

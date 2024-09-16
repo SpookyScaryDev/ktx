@@ -1104,11 +1104,6 @@ static void fb_flag_taken(gedict_t* item, gedict_t* player)
 	AssignVirtualGoal(item);
 }
 
-static qbool fb_flag_touch(gedict_t* item, gedict_t* player)
-{
-	return false;
-}
-
 static void fb_rune_taken(gedict_t* item, gedict_t* player)
 {
 	BotTookMessage(item, player);
