@@ -69,10 +69,10 @@ static qbool GoalLeaveForTeammate(gedict_t *self, gedict_t *goal_entity)
 	}
 
 	// Check bot teammates so the bots don't all gang up for items
-	gedict_t* player;
-	for (player = world; (player = find_plr(player));)
+	gedict_t *plr;
+	for (plr = world; (plr = find_plr(plr));)
 	{
-		if (player->isBot && SameTeam(self, player))
+		if (plr->isBot && SameTeam(self, plr))
 		{
 			// Don't ever leave these items!
 			char* ignore[] =
@@ -85,9 +85,9 @@ static qbool GoalLeaveForTeammate(gedict_t *self, gedict_t *goal_entity)
 			}
 
 			// Let the bot with the highest desire take the item, if the bots can see each other.
-			if (goal_entity == player->fb.best_goal
-				&& Visible_360(self, player)
-				&& goal_entity->fb.saved_goal_desire <= player->fb.best_goal->fb.saved_goal_desire)
+			if (goal_entity == plr->fb.best_goal
+				&& Visible_360(self, plr)
+				&& goal_entity->fb.saved_goal_desire <= plr->fb.best_goal->fb.saved_goal_desire)
 			{
 				goal_entity->fb.saved_goal_desire = 0;
 				return true;
@@ -98,7 +98,7 @@ static qbool GoalLeaveForTeammate(gedict_t *self, gedict_t *goal_entity)
 	return false;
 }
 
-static qbool ShouldGoalIgnoreDistance(gedict_t* goal_entity) 
+static qbool ShouldGoalIgnoreDistance(gedict_t *goal_entity) 
 {
 	if (isCTF())
 	{
