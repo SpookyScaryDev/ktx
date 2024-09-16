@@ -57,6 +57,8 @@ void UpdateGoalEntity(gedict_t *item, gedict_t *taker)
 // FIXME: If teammate is considerably weaker and bot needs/wants item, shout COMING instead
 static qbool GoalLeaveForTeammate(gedict_t *self, gedict_t *goal_entity)
 {
+	gedict_t* plr;
+
 	if ((g_globalvars.time < goal_entity->fb.touchPlayerTime) && goal_entity->fb.touchPlayer
 			&& (goal_entity->fb.touchPlayer != self))
 	{
@@ -69,7 +71,6 @@ static qbool GoalLeaveForTeammate(gedict_t *self, gedict_t *goal_entity)
 	}
 
 	// Check bot teammates so the bots don't all gang up for items
-	gedict_t *plr;
 	for (plr = world; (plr = find_plr(plr));)
 	{
 		if (plr->isBot && SameTeam(self, plr))
