@@ -1571,13 +1571,14 @@ static void TeamplayBasicCommand(gedict_t *client, char *text)
 
 static void TeamplayTossingRune(gedict_t* client)
 {
+	char buffer[128];
 	const char* rune = "";
+
 	if (client->ctf_flag & CTF_RUNE_RES) rune = TP_NAME_RUNE1;
 	if (client->ctf_flag & CTF_RUNE_STR) rune = TP_NAME_RUNE2;
 	if (client->ctf_flag & CTF_RUNE_HST) rune = TP_NAME_RUNE3;
 	if (client->ctf_flag & CTF_RUNE_RGN) rune = TP_NAME_RUNE4;
 
-	char buffer[128];
 
 	buffer[0] = '\0';
 
