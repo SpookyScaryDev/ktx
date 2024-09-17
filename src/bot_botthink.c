@@ -132,9 +132,10 @@ static void SurrenderCTFItemsLogic(gedict_t* self)
 	gedict_t* teammate = IdentifyMostVisibleTeammate(self);
 	if (teammate != world && !teammate->isBot) {
 		vec3_t toTeam;
-		float distance = VectorLength(toTeam);
+		float distance;
 
 		VectorSubtract(teammate->s.v.origin, self->s.v.origin, toTeam);
+		distance = VectorLength(toTeam);
 
 		// If close to a human player, and if no enemies are near
 		if (distance < 150 && self->fb.enemy_dist >= 500)
