@@ -950,7 +950,8 @@ void FirstFrame(void)
 	RegisterCvar("k_no_fps_physics");
 //{ ctf
 	RegisterCvar("k_ctf_custom_models");
-	RegisterCvar("k_ctf_hook");
+	RegisterCvar("k_ctf_hook"); 
+	RegisterCvar("k_ctf_swap_haste_with_hook"); // if true, players must have the haste rune to use the hook and the affects of haste do not apply
 	RegisterCvar("k_ctf_hookstyle"); // loop through hookstyle settings
 	RegisterCvar("k_ctf_runes");
 	RegisterCvarEx("k_ctf_rune_bounce", "3");
@@ -1262,12 +1263,14 @@ void FixCTFItems(void)
 	static gameType_t old_k_mode = 0;	// static
 	static int k_ctf_runes = 0;			// static
 	static int k_ctf_hook = 0;			// static
+	static int k_ctf_swap_haste_with_hook = 0;			// static
 
 	if (framecount == 1)
 	{ // just init vars at first frame, after this we can determine if such vars changed
 		old_k_mode = k_mode;
 		k_ctf_runes = cvar("k_ctf_runes");
 		k_ctf_hook = cvar("k_ctf_hook");
+		k_ctf_swap_haste_with_hook = cvar("k_ctf_swap_haste_with_hook");
 
 		return;
 	}
@@ -1296,12 +1299,13 @@ void FixCTFItems(void)
 
 	if ((old_k_mode != k_mode) || (k_ctf_hook != cvar("k_ctf_hook")))
 	{
-		AddHook(isCTF() && cvar("k_ctf_hook"));
+		AddHook(isCTF() && !cvar("k_ctf_swap_haste_with_hook"));
 	}
 
 	old_k_mode = k_mode;
 	k_ctf_runes = cvar("k_ctf_runes");
 	k_ctf_hook = cvar("k_ctf_hook");
+	k_ctf_swap_haste_with_hook = cvar("k_ctf_swap_haste_with_hook");
 }
 
 void FixRA(void)

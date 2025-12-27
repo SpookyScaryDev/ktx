@@ -2126,7 +2126,7 @@ void W_Attack(void)
 	switch ((int)self->s.v.weapon)
 	{
 		case IT_AXE:
-			if (self->ctf_flag & CTF_RUNE_HST)
+			if (self->ctf_flag & CTF_RUNE_HST && !cvar("k_ctf_swap_haste_with_hook"))
 			{
 				self->attack_finished = g_globalvars.time + 0.5
 						- (cvar("k_ctf_rune_power_hst") / 10);
@@ -2165,7 +2165,7 @@ void W_Attack(void)
 
 		case IT_SHOTGUN:
 			player_shot1();
-			if (self->ctf_flag & CTF_RUNE_HST)
+			if (self->ctf_flag & CTF_RUNE_HST && !cvar("k_ctf_swap_haste_with_hook"))
 			{
 				self->attack_finished = g_globalvars.time + 0.5
 						- (cvar("k_ctf_rune_power_hst") / 10);
@@ -2192,7 +2192,7 @@ void W_Attack(void)
 
 		case IT_SUPER_SHOTGUN:
 			player_shot1();
-			if (self->ctf_flag & CTF_RUNE_HST)
+			if (self->ctf_flag & CTF_RUNE_HST && !cvar("k_ctf_swap_haste_with_hook"))
 			{
 				self->attack_finished = g_globalvars.time + 0.5
 						- (cvar("k_ctf_rune_power_hst") / 20);
@@ -2218,7 +2218,7 @@ void W_Attack(void)
 
 		case IT_GRENADE_LAUNCHER:
 			player_rocket1();
-			if (self->ctf_flag & CTF_RUNE_HST)
+			if (self->ctf_flag & CTF_RUNE_HST && !cvar("k_ctf_swap_haste_with_hook"))
 			{
 				self->attack_finished = g_globalvars.time + 0.5
 						- (cvar("k_ctf_rune_power_hst") / 10);
@@ -2234,7 +2234,7 @@ void W_Attack(void)
 
 		case IT_ROCKET_LAUNCHER:
 			player_rocket1();
-			if (self->ctf_flag & CTF_RUNE_HST)
+			if (self->ctf_flag & CTF_RUNE_HST && !cvar("k_ctf_hook"))
 			{
 				self->attack_finished = g_globalvars.time + 0.5
 						- (cvar("k_ctf_rune_power_hst") / 20);
@@ -2401,7 +2401,7 @@ qbool W_ChangeWeapon(int wp)
 	{
 		case 1:
 			// ctf shortcut for newbs: selecting axe when you already have it switches to grapple
-			if (isCTF() && (self->s.v.weapon == IT_AXE) && cvar("k_ctf_hook"))
+			if (isCTF() && (self->s.v.weapon == IT_AXE) && (int)self->s.v.items & IT_HOOK)
 			{
 				fl = IT_HOOK;
 			}

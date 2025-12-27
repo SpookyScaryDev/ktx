@@ -62,6 +62,7 @@ void FlagStatus(void);
 void TossFlag(void);
 void norunes(void);
 void nohook(void);
+void swaphook(void);
 void hooksmooth(void);
 void hookfast(void);
 void hookclassic(void);
@@ -532,6 +533,7 @@ const char CD_NODESC[] = "no desc";
 #define CD_TOSSFLAG			"drop flag (CTF)"
 #define CD_FLAGSTATUS		"show flags status (CTF)"
 #define CD_NOHOOK			"toggle hook (CTF)"
+#define CD_SWAPHOOK			"swap haste run with hook (CTF)"
 #define CD_HOOKSMOOTH			"switch Hook style settings: Smooth Hook (CTF)"
 #define CD_HOOKFAST			"switch Hook style settings: Fast Hook (CTF)"
 #define CD_HOOKCLASSIC			"switch Hook style settings: Classic Hook (CTF)"
@@ -917,6 +919,7 @@ cmd_t cmds[] =
 	{ "tossrune", 					TossRune, 						0, 			CF_PLAYER | CF_MATCHLESS, 												CD_TOSSRUNE },
 	{ "tossflag", 					TossFlag, 						0, 			CF_PLAYER | CF_MATCHLESS, 												CD_TOSSFLAG },
 	{ "nohook", 					nohook, 						0, 			CF_PLAYER | CF_MATCHLESS, 											CD_NOHOOK },
+	{ "swaphook", 					swaphook, 						0, 			CF_PLAYER | CF_MATCHLESS, 											CD_SWAPHOOK },
 	{ "hook_smooth", 				hooksmooth, 					0, 			CF_PLAYER | CF_MATCHLESS, 											CD_HOOKSMOOTH },
 	{ "hook_fast", 					hookfast, 					0, 			CF_PLAYER | CF_MATCHLESS, 											CD_HOOKFAST },
 	{ "hook_classic", 				hookclassic, 					0, 			CF_PLAYER | CF_MATCHLESS, 											CD_HOOKCLASSIC },
@@ -1954,8 +1957,8 @@ void ModStatus2(void)
 						"off" :
 						(cvar("k_lockmode") == 2 ?
 								"all" : (cvar("k_lockmode") == 1 ? "team" : "unknown"))));
-		G_sprint(self, 2, "%s: hook %s, runes %s, ga %s\n", redtext("CTF settings"),
-					OnOff(cvar("k_ctf_hook")), OnOff(cvar("k_ctf_runes")), OnOff(cvar("k_ctf_ga")));
+		G_sprint(self, 2, "%s: hook %s, runes %s, ga %s, swap hook %2\n", redtext("CTF settings"),
+					OnOff(cvar("k_ctf_hook")), OnOff(cvar("k_ctf_runes")), OnOff(cvar("k_ctf_ga")), OnOff(cvar("k_ctf_swap_haste_with_hook")));
 	}
 	else if (isTeam())
 	{
@@ -4476,6 +4479,7 @@ const char ctf_um_init[] =
 	"k_mode 4\n"
 	"k_ctf_based_spawn 1\n"			// team based spawn
 	"k_ctf_hook 0\n"				// hook off
+	"k_ctf_swap_haste_with_hook 0\n" // don't use the haste rune for hook
 	"k_ctf_runes 0\n"				// runes off
 	"k_ctf_ga 1\n"					// green armor on
 ;

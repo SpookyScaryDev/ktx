@@ -2343,7 +2343,7 @@ void PutClientInServer(void)
 	// regardless of dmm add hook if ctf.. could play instagib ctf etc
 	if (isCTF())
 	{
-		if (cvar("k_ctf_hook"))
+		if (cvar("k_ctf_hook") && !cvar("k_ctf_swap_haste_with_hook"))
 		{
 			self->s.v.items = (int)self->s.v.items | IT_HOOK;
 		}

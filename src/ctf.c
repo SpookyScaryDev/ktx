@@ -774,7 +774,40 @@ void nohook(void)
 	// In matchless mode, toggling hook normally won't do anything since match is already in progress. Call this to handle this scenario.
 	if (k_matchLess)
 	{
-		if (cvar("k_ctf_hook"))
+		if (cvar("k_ctf_hook") && ! cvar("k_ctf_swap_haste_with_hook"))
+		{
+			AddHook(true);
+		}
+		else
+		{
+			AddHook(false);
+		}
+	}
+}
+
+void swaphook(void)
+{
+	// Toggle k_ctf_swap_haste_with_hook
+	// If enabled, players can only use the hook when they have the haste rune and the haste rune no longer affects speed
+
+	if (match_in_progress && !k_matchLess)
+	{
+		return;
+	}
+
+	if (!isCTF())
+	{
+		G_sprint(self, 2, "Can't do this in non CTF mode\n");
+
+		return;
+	}
+
+	cvar_toggle_msg(self, "k_ctf_swap_haste_with_hook", redtext("swap haste with hook"));
+
+	// In matchless mode, toggling hook normally won't do anything since match is already in progress. Call this to handle this scenario.
+	if (k_matchLess)
+	{
+		if (cvar("k_ctf_hook") && !cvar("k_ctf_swap_haste_with_hook"))
 		{
 			AddHook(true);
 		}
@@ -823,6 +856,7 @@ void mctf(void)
 	}
 
 	cvar_fset("k_ctf_hook", 0);
+	cvar_fset("k_ctf_swap_haste_with_hook", 0);
 	cvar_fset("k_ctf_runes", 0);
 
 	G_sprint(self, 2, "%s turn off: %s\n", getname(self), redtext("hook & runes"));

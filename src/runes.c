@@ -162,6 +162,10 @@ void DropRune(void)
 
 	if (self->ctf_flag & CTF_RUNE_HST)
 	{
+		if (cvar("k_ctf_swap_haste_with_hook"))
+		{
+			AddHook(false);
+		}
 		DoDropRune( CTF_RUNE_HST, false);
 		self->ps.hst_time += g_globalvars.time - self->rune_pickup_time;
 	}
@@ -192,9 +196,16 @@ void TossRune(void)
 
 	if (self->ctf_flag & CTF_RUNE_HST)
 	{
+		if (cvar("k_ctf_swap_haste_with_hook"))
+		{
+			AddHook(false);
+		}
+		else 
+		{
+			self->maxspeed = cvar("sv_maxspeed");
+		}
 		DoTossRune( CTF_RUNE_HST);
 		self->ps.hst_time += g_globalvars.time - self->rune_pickup_time;
-		self->maxspeed = cvar("sv_maxspeed");
 	}
 
 	if (self->ctf_flag & CTF_RUNE_RGN)
@@ -303,9 +314,17 @@ void RuneTouch(void)
 
 	if (other->ctf_flag & CTF_RUNE_HST)
 	{
-		other->maxspeed *= (cvar("k_ctf_rune_power_hst") / 8) + 1;
-		// other->s.v.items = (int)other->s.v.items | CTF_RUNE_HST;
-		G_sprint(other, 2, "You got the %s rune\n", redtext("haste"));
+		if (cvar("k_ctf_swap_haste_with_hook"))
+		{
+			AddHook(true);
+			G_sprint(other, 2, "You got the %s\n", redtext("hook"));
+		}
+		else
+		{
+			other->maxspeed *= (cvar("k_ctf_rune_power_hst") / 8) + 1;
+			// other->s.v.items = (int)other->s.v.items | CTF_RUNE_HST;
+			G_sprint(other, 2, "You got the %s rune\n", redtext("haste"));
+		}
 	}
 
 	if (other->ctf_flag & CTF_RUNE_RGN)
@@ -437,7 +456,7 @@ void ResistanceSound(gedict_t *player)
 
 void HasteSound(gedict_t *player)
 {
-	if (player->ctf_flag & CTF_RUNE_HST)
+	if (player->ctf_flag & CTF_RUNE_HST && !cvar("k_ctf_swap_haste_with_hook"))
 	{
 		if (player->rune_sound_time < g_globalvars.time)
 		{

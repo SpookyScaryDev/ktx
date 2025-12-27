@@ -59,7 +59,7 @@ void GrappleReset(gedict_t *rhook)
 	owner->hook_out = false;
 	owner->s.v.weaponframe = 0;
 
-	if (cvar("k_ctf_hookstyle") == 1)
+	if (cvar("k_ctf_hookstyle") == 1 && !cvar("k_ctf_swap_haste_with_hook"))
 	{
 		owner->attack_finished = (self->ctf_flag & CTF_RUNE_HST) ? 
 			g_globalvars.time + ((HOOK_FIRE_RATE / 2) / cvar("k_ctf_rune_power_hst")) : g_globalvars.time + (HOOK_FIRE_RATE / 2);
@@ -416,7 +416,7 @@ void GrappleService(void)
 	}
 
 
-	if (self->ctf_flag & CTF_RUNE_HST)
+	if (self->ctf_flag & CTF_RUNE_HST && !cvar("k_ctf_swap_haste_with_hook"))
 	{
 		VectorScale(hookVelocity, self->hook_pullspeed * hasteMultiplier, self->s.v.velocity);
 	}
@@ -471,7 +471,7 @@ void GrappleThrow(void)
 	// Weapon velocitys should not be based on server maxspeed imo
 	// Removing purectf velocity changes ( 2.5 * self->maxspeed )
 
-	if (self->ctf_flag & CTF_RUNE_HST)
+	if (self->ctf_flag & CTF_RUNE_HST && !cvar("k_ctf_swap_haste_with_hook"))
 	{
 		HasteSound(self);
 		VectorScale(g_globalvars.v_forward, throwSpeed * hasteMultiplier, newmis->s.v.velocity);

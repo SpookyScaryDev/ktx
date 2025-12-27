@@ -182,7 +182,7 @@ static void BotsAimAtPlayerLogic(gedict_t *self, vec3_t rel_pos, float *rel_dist
 	if (IsVelocityWeapon(self->fb.desired_weapon_impulse) && !AttackFinished(self))
 	{
 		rel_time = *rel_dist / 1000;
-		if (IsNailgun(self->fb.desired_weapon_impulse) && (self->ctf_flag & CTF_RUNE_HST))
+		if (IsNailgun(self->fb.desired_weapon_impulse) && (self->ctf_flag & CTF_RUNE_HST && !cvar("k_ctf_swap_haste_with_hook")))
 		{
 			rel_time /= (cvar("k_ctf_rune_power_hst") / 2) + 1;
 		}
